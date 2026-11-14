@@ -1,0 +1,2 @@
+# Install the shared engine, API, and test dependencies from pyproject.toml.
+-e .[dev]
