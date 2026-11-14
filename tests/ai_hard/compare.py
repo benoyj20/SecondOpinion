@@ -2,7 +2,7 @@
 
 Not a pytest test: the AI pass calls the configured model, so its answers can change between runs.
 
-  SO_RELEASE_DIR=../oncosys-hackathon-challenge/data/tcga-brca/raw .venv/bin/python tests/ai_hard/compare.py [name ...]
+  SO_RELEASE_DIR=oncosys-hackathon-challenge/data/tcga-brca/raw .venv/bin/python tests/ai_hard/compare.py [name ...]
 
 Names pick reports ("numbers" runs numbers_report.md); with none, every report runs. `--rules` skips the AI pass; `--no-split`
 runs the AI pass without the AI split (to measure what the split adds).

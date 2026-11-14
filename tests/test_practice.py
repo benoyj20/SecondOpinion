@@ -20,10 +20,10 @@ def _fill(folder: Path) -> Path:
 
 @pytest.fixture
 def no_local_copy(monkeypatch, tmp_path):
-    """No SO_RELEASE_DIR, no sibling challenge repo, and a temp folder inside tmp_path."""
+    """No SO_RELEASE_DIR, no challenge repo data, and a temp folder inside tmp_path."""
     monkeypatch.delenv("SO_RELEASE_DIR", raising=False)
     monkeypatch.delenv("SO_RELEASES_ROOT", raising=False)
-    monkeypatch.setattr(practice, "SIBLING_RAW", tmp_path / "no-challenge-repo")
+    monkeypatch.setattr(practice, "CHALLENGE_RAW", tmp_path / "no-challenge-repo")
     monkeypatch.setattr(practice, "temporary_folder", lambda: tmp_path / "temp-release")
 
 
@@ -53,8 +53,8 @@ def test_uses_so_release_dir_when_complete(no_local_copy, monkeypatch, tmp_path)
 
 
 def test_uses_challenge_repo_next_to_this_one(no_local_copy, monkeypatch, tmp_path):
-    sibling = _fill(tmp_path / "sibling-raw")
-    monkeypatch.setattr(practice, "SIBLING_RAW", sibling)
+    challenge_raw = _fill(tmp_path / "challenge-raw")
+    monkeypatch.setattr(practice, "CHALLENGE_RAW", challenge_raw)
     assert practice.practice_release().source == "challenge_repo"
 
 
@@ -79,7 +79,7 @@ def test_checksum_mismatch_is_refused_and_not_kept(no_local_copy, monkeypatch, t
 
 
 def test_endpoint_returns_folder(no_local_copy, monkeypatch, tmp_path):
-    monkeypatch.setattr(practice, "SIBLING_RAW", _fill(tmp_path / "sibling-raw"))
+    monkeypatch.setattr(practice, "CHALLENGE_RAW", _fill(tmp_path / "challenge-raw"))
     response = client.post("/practice-release")
     assert response.status_code == 200
     assert response.json()["source"] == "challenge_repo"

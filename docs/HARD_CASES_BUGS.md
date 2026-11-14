@@ -7,7 +7,7 @@ and rules plus the AI helper.
 **Baseline (2026-11-14): rules only 41/77, with AI 45/77.** A row only counts as right when the verdict is right
 *and* it came from the number the sentence states; a right verdict from a misread number is "luck" and counts as wrong.
 
-Run it again: `SO_RELEASE_DIR=../oncosys-hackathon-challenge/data/tcga-brca/raw .venv/bin/python tests/ai_hard/compare.py`
+Run it again: `SO_RELEASE_DIR=oncosys-hackathon-challenge/data/tcga-brca/raw .venv/bin/python tests/ai_hard/compare.py`
 
 Each fix goes in with a failing test first, and the rules and the AI path get the same fix in the same style
 (one shared helper where both need it), so neither path can disagree with the other.

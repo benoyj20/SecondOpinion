@@ -50,7 +50,7 @@ first; the Microsoft Store placeholder prints nothing useful, so install from py
 ### Step 2. Get the code
 
 ```bash
-git clone https://github.com/all3n2601/SecondOpinion.git
+git clone https://github.com/benoyj20/SecondOpinion.git
 cd SecondOpinion
 ```
 
@@ -72,7 +72,7 @@ py -3.13 -m venv .venv
 .venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-This creates a `.venv` folder inside `SecondOpinion`. The app expects it there, so don't put it anywhere
+This creates a `.venv` folder in the repository root. The app expects it there, so don't put it anywhere
 else (the npm scripts find `.venv/bin/python` or `.venv\Scripts\python.exe` on their own). If
 `python3` is older than 3.11, use the full name of a newer one instead, for example
 `python3.13 -m venv .venv`; on Windows, change `-3.13` to any version `py --list` shows from 3.11 to 3.14.
@@ -89,21 +89,19 @@ running `npm run dev` first: Windows will not let `npm ci` replace files a runni
 
 ### Step 5. Download the data
 
-The data is not stored in this repository. Get it from the organizers' repository, which goes in the
-folder **next to** `SecondOpinion`, not inside it.
+The organizers' challenge repository is already included here, in the `oncosys-hackathon-challenge`
+folder, but its TCGA data is not committed. Download it with the challenge's own script.
 
 macOS / Linux:
 
 ```bash
-git clone https://github.com/disleveK/oncosys-hackathon-challenge.git ../oncosys-hackathon-challenge
-.venv/bin/python ../oncosys-hackathon-challenge/data/tcga-brca/fetch.py
+.venv/bin/python oncosys-hackathon-challenge/data/tcga-brca/fetch.py
 ```
 
 Windows (PowerShell):
 
 ```powershell
-git clone https://github.com/disleveK/oncosys-hackathon-challenge.git ..\oncosys-hackathon-challenge
-.venv\Scripts\python.exe ..\oncosys-hackathon-challenge\data\tcga-brca\fetch.py
+.venv\Scripts\python.exe oncosys-hackathon-challenge\data\tcga-brca\fetch.py
 ```
 
 This downloads the TCGA-BRCA release (about 70 MB) and checks every file. If it prints `CHANGED` for a
@@ -116,17 +114,17 @@ The app asks for this path. Print it.
 macOS / Linux:
 
 ```bash
-(cd ../oncosys-hackathon-challenge/data/tcga-brca/raw && pwd)
+(cd oncosys-hackathon-challenge/data/tcga-brca/raw && pwd)
 ```
 
 Windows (PowerShell):
 
 ```powershell
-(Resolve-Path ..\oncosys-hackathon-challenge\data\tcga-brca\raw).Path
+(Resolve-Path oncosys-hackathon-challenge\data\tcga-brca\raw).Path
 ```
 
-Copy the line it prints, for example `/Users/you/oncosys-hackathon-challenge/data/tcga-brca/raw` or
-`C:\Users\you\oncosys-hackathon-challenge\data\tcga-brca\raw`.
+Copy the line it prints, for example `/Users/you/SecondOpinion/oncosys-hackathon-challenge/data/tcga-brca/raw` or
+`C:\Users\you\SecondOpinion\oncosys-hackathon-challenge\data\tcga-brca\raw`.
 
 To skip pasting it every time, save it once. This is optional:
 
@@ -188,14 +186,14 @@ npm run dev
 To check a report (`.md`, `.txt` or `.pdf`) from the terminal instead:
 
 ```bash
-.venv/bin/second-opinion --release ../oncosys-hackathon-challenge/data/tcga-brca/raw \
+.venv/bin/second-opinion --release oncosys-hackathon-challenge/data/tcga-brca/raw \
   --report path/to/report.md --out audit.json
 ```
 
 Windows (PowerShell):
 
 ```powershell
-.venv\Scripts\second-opinion.exe --release ..\oncosys-hackathon-challenge\data\tcga-brca\raw `
+.venv\Scripts\second-opinion.exe --release oncosys-hackathon-challenge\data\tcga-brca\raw `
   --report path\to\report.pdf --out audit.json
 ```
 
@@ -289,7 +287,7 @@ is older than 3.11, use the name of a newer one, such as `python3.13`):
 ```bash
 python3 -m venv .venv && .venv/bin/python -m pip install -r requirements.txt
 npm ci
-git clone https://github.com/disleveK/oncosys-hackathon-challenge.git ../oncosys-hackathon-challenge && .venv/bin/python ../oncosys-hackathon-challenge/data/tcga-brca/fetch.py
+.venv/bin/python oncosys-hackathon-challenge/data/tcga-brca/fetch.py
 ```
 
 Windows (PowerShell):
@@ -297,11 +295,11 @@ Windows (PowerShell):
 ```powershell
 py -3.13 -m venv .venv; .venv\Scripts\python.exe -m pip install -r requirements.txt
 npm ci
-git clone https://github.com/disleveK/oncosys-hackathon-challenge.git ..\oncosys-hackathon-challenge; .venv\Scripts\python.exe ..\oncosys-hackathon-challenge\data\tcga-brca\fetch.py
+.venv\Scripts\python.exe oncosys-hackathon-challenge\data\tcga-brca\fetch.py
 ```
 
 The third command downloads the frozen TCGA-BRCA release A (about 70 MB) into
-`../oncosys-hackathon-challenge/data/tcga-brca/raw/` and verifies its checksums. If `fetch.py`
+`oncosys-hackathon-challenge/data/tcga-brca/raw/` and verifies its checksums. If `fetch.py`
 prints `CHANGED` for a file, do not use that file and tell the organizers. No TCGA data is
 committed to this repository.
 
@@ -317,7 +315,7 @@ Open <http://localhost:3000> and choose **Start an audit**. The Start page (`/st
 ### Try it in one click
 
 1. On the Start page, leave the release folder empty or enter one. If it is empty, the practice run
-   fills it in with release A: `SO_RELEASE_DIR`, else `../oncosys-hackathon-challenge/data/tcga-brca/raw`,
+   fills it in with release A: `SO_RELEASE_DIR`, else `oncosys-hackathon-challenge/data/tcga-brca/raw`,
    else a temporary download (about 70 MB, checked against the frozen checksums, reused afterwards).
    To pre-fill the box, copy `apps/web/.env.example` to `apps/web/.env.local`, set
    `NEXT_PUBLIC_DEFAULT_RELEASE_DIR`, and restart.
@@ -409,30 +407,30 @@ At the Q&A, judges give an envelope number and a four-word code.
 It runs the organizers' own `envelopes/unseal.py`, lists the fingerprint checks it passed, loads
 `claim_auditor_report.md` into the report box and sets the data folder to release A (or the envelope's
 own release, if you pick it). Then press **Run the audit now**. **Rehearse with the practice envelope**
-does the same with the public practice code. The challenge repository must sit next to this one (or set
-`SO_CHALLENGE_DIR`), with release A fetched. The `cryptography` package that unsealing needs comes with
+does the same with the public practice code. It uses the bundled `oncosys-hackathon-challenge` folder (or
+`SO_CHALLENGE_DIR`, if set), with release A fetched. The `cryptography` package that unsealing needs comes with
 our own `requirements.txt` (Step 3), so there is nothing extra to install.
 
 **From the terminal**, in the challenge repository, with our `.venv` (it already has `cryptography`):
 
 ```bash
-cd ../oncosys-hackathon-challenge
-../SecondOpinion/.venv/bin/python envelopes/unseal.py <number> <four words>
+cd oncosys-hackathon-challenge
+../.venv/bin/python envelopes/unseal.py <number> <four words>
 ```
 
 Rehearse with the public practice envelope:
 
 ```bash
-../SecondOpinion/.venv/bin/python envelopes/unseal.py practice orange meadow pilot lantern
+../.venv/bin/python envelopes/unseal.py practice orange meadow pilot lantern
 ```
 
 Windows (PowerShell). Set `PYTHONUTF8` first: `unseal.py` prints check marks and can otherwise stop with
 a `UnicodeEncodeError` (the app's **Unseal envelope** button sets it for you):
 
 ```powershell
-cd ..\oncosys-hackathon-challenge
+cd oncosys-hackathon-challenge
 $env:PYTHONUTF8 = 1
-..\SecondOpinion\.venv\Scripts\python.exe envelopes\unseal.py practice orange meadow pilot lantern
+..\.venv\Scripts\python.exe envelopes\unseal.py practice orange meadow pilot lantern
 ```
 
 **Which release to audit against.** Our product's input in the envelope is
@@ -440,24 +438,24 @@ $env:PYTHONUTF8 = 1
 Cohort Control Tower (see the table in `envelopes/README.md`); it is a changed release with no RNA file
 and no manifests. The practice brief says it describes "release A from `fetch.py`", and the product brief
 lists "the TCGA-BRCA files from `fetch.py` and the manifests" as our data, so **check the judges' report
-against release A**, `../oncosys-hackathon-challenge/data/tcga-brca/raw` (its manifests sit one folder
+against release A**, `oncosys-hackathon-challenge/data/tcga-brca/raw` (its manifests sit one folder
 up and are read for slide counts). The tool works on an envelope's `release/` folder too, if the judges
 ask for it.
 
 From this repository:
 
 ```bash
-.venv/bin/second-opinion --release ../oncosys-hackathon-challenge/data/tcga-brca/raw \
-  --report ../oncosys-hackathon-challenge/envelopes/opened/E<number>/claim_auditor_report.md --out audit.json
-.venv/bin/python ../oncosys-hackathon-challenge/format/validate.py audit.json
+.venv/bin/second-opinion --release oncosys-hackathon-challenge/data/tcga-brca/raw \
+  --report oncosys-hackathon-challenge/envelopes/opened/E<number>/claim_auditor_report.md --out audit.json
+.venv/bin/python oncosys-hackathon-challenge/format/validate.py audit.json
 ```
 
 Windows (PowerShell):
 
 ```powershell
-.venv\Scripts\second-opinion.exe --release ..\oncosys-hackathon-challenge\data\tcga-brca\raw `
-  --report ..\oncosys-hackathon-challenge\envelopes\opened\E<number>\claim_auditor_report.md --out audit.json
-.venv\Scripts\python.exe ..\oncosys-hackathon-challenge\format\validate.py audit.json
+.venv\Scripts\second-opinion.exe --release oncosys-hackathon-challenge\data\tcga-brca\raw `
+  --report oncosys-hackathon-challenge\envelopes\opened\E<number>\claim_auditor_report.md --out audit.json
+.venv\Scripts\python.exe oncosys-hackathon-challenge\format\validate.py audit.json
 ```
 
 It prints one line per claim (verdict, the data's value or what is missing, fragile and close-call
@@ -506,16 +504,16 @@ npm run build
 To include the real-data and envelope tests (about 500 tests in total):
 
 ```bash
-export SO_RELEASE_DIR="$PWD/../oncosys-hackathon-challenge/data/tcga-brca/raw"
-export SO_ENVELOPE_DIR="$PWD/../oncosys-hackathon-challenge/envelopes/opened/practice/release"
+export SO_RELEASE_DIR="$PWD/oncosys-hackathon-challenge/data/tcga-brca/raw"
+export SO_ENVELOPE_DIR="$PWD/oncosys-hackathon-challenge/envelopes/opened/practice/release"
 npm test
 ```
 
 Windows (PowerShell):
 
 ```powershell
-$env:SO_RELEASE_DIR = (Resolve-Path ..\oncosys-hackathon-challenge\data\tcga-brca\raw).Path
-$env:SO_ENVELOPE_DIR = (Resolve-Path ..\oncosys-hackathon-challenge\envelopes\opened\practice\release).Path
+$env:SO_RELEASE_DIR = (Resolve-Path oncosys-hackathon-challenge\data\tcga-brca\raw).Path
+$env:SO_ENVELOPE_DIR = (Resolve-Path oncosys-hackathon-challenge\envelopes\opened\practice\release).Path
 npm test
 ```
 
@@ -613,8 +611,8 @@ and Decision Record. No database. The API keeps no session: the browser sends ba
 | `POST /ai/narrate` | Optional AI wording for a role view, with blanks for the numbers; always answers 200 (AI text or `template`) |
 | `GET /health`, `GET /variants` | Status; the eight ways of counting |
 
-Interactive API docs while running: <http://localhost:3000/api/docs>. See [docs/PLAN.md](SecondOpinion/docs/PLAN.md)
-and the [implementation plan](SecondOpinion/docs/superpowers/plans/2026-11-12-secondopinion-claim-auditor.md).
+Interactive API docs while running: <http://localhost:3000/api/docs>. See [docs/PLAN.md](docs/PLAN.md)
+and the [implementation plan](docs/superpowers/plans/2026-11-12-secondopinion-claim-auditor.md).
 
 Production: `npm run build`, then `npm run start:web` and `npm run start:api` as separate services,
 with `API_ORIGIN` set for the frontend and `SO_RELEASES_ROOT` set on the API.
@@ -634,7 +632,7 @@ The results shown here are in whole or part based upon data generated by the TCG
 https://www.cancer.gov/tcga. Data via [UCSC Xena](https://xenabrowser.net/) (Goldman et al., *Nat
 Biotechnol* 2020) and the TCGA Pan-Cancer Clinical Data Resource (Liu et al., *Cell* 2018); slide
 metadata via NCI Imaging Data Commons. Details in
-[docs/challenge/DATA_LICENSES.md](SecondOpinion/docs/challenge/DATA_LICENSES.md).
+[docs/challenge/DATA_LICENSES.md](docs/challenge/DATA_LICENSES.md).
 
-Libraries and their licenses: [THIRD_PARTY.md](SecondOpinion/THIRD_PARTY.md). The web fonts are IBM Plex Sans,
+Libraries and their licenses: [THIRD_PARTY.md](THIRD_PARTY.md). The web fonts are IBM Plex Sans,
 IBM Plex Mono and Newsreader (SIL Open Font License).

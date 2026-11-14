@@ -89,7 +89,7 @@ export function runAudit(releaseDir: string, claims: Claim[]): Promise<AuditResu
 
 export interface PracticeRelease {
   release_dir: string;
-  /** Where it came from: SO_RELEASE_DIR, the challenge repo next to this one, or a temporary download. */
+  /** Where it came from: SO_RELEASE_DIR, the challenge repo inside this one, or a temporary download. */
   source: "environment" | "challenge_repo" | "temporary";
   downloaded: string[];
 }

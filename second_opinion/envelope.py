@@ -5,7 +5,7 @@ unseal.py unchanged (it checks release A, the envelope's fingerprint and every r
 what it opened: the report for our product (claim_auditor_report.md), release A, and the envelope's own
 release folder. The practice envelope has no report of its own; its report is the practice brief.
 
-The challenge repository is found at SO_CHALLENGE_DIR, else next to this repository.
+The challenge repository is found at SO_CHALLENGE_DIR, else in this repository's oncosys-hackathon-challenge/.
 """
 
 import os
@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
-SIBLING_CHALLENGE = _REPO_ROOT.parent / "oncosys-hackathon-challenge"
+CHALLENGE_DIR = _REPO_ROOT / "oncosys-hackathon-challenge"
 REPORT_FILE = "claim_auditor_report.md"
 PRACTICE_BRIEF = Path("products") / "research-claim-auditor" / "practice_brief.md"
 UNSEAL_TIMEOUT_SECONDS = 180  # unseal.py says 10 to 20 seconds; a slow laptop gets plenty of room
@@ -46,11 +46,11 @@ class OpenedEnvelope:
 
 def challenge_repo() -> Path:
     env = os.environ.get("SO_CHALLENGE_DIR")
-    folder = Path(env).expanduser() if env else SIBLING_CHALLENGE
+    folder = Path(env).expanduser() if env else CHALLENGE_DIR
     if not (folder / "envelopes" / "unseal.py").is_file():
         raise EnvelopeError(
-            f"The challenge repository was not found at {folder}. Clone it next to SecondOpinion "
-            "(see the README), or set SO_CHALLENGE_DIR to its folder"
+            f"The challenge repository was not found at {folder}. It ships in this repository's "
+            "oncosys-hackathon-challenge folder, or set SO_CHALLENGE_DIR to another copy"
         )
     return folder.resolve()
 

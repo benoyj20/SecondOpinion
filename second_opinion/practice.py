@@ -2,7 +2,7 @@
 
 The data is not committed (redistribution terms are unconfirmed), so the practice run looks for it in this order:
   1. SO_RELEASE_DIR, if it names a complete release folder;
-  2. the challenge repository next to this one (../oncosys-hackathon-challenge/data/tcga-brca/raw), where
+  2. the challenge repository inside this one (oncosys-hackathon-challenge/data/tcga-brca/raw), where
      its fetch.py puts the files;
   3. a temporary folder, downloading release A from the public UCSC Xena hub on first use and checking
      every file against the event's frozen SHA-256 (same list as the challenge's sources.csv).
@@ -50,7 +50,7 @@ RELEASE_A_SOURCES: dict[str, tuple[str, str]] = {
 }
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
-SIBLING_RAW = _REPO_ROOT.parent / "oncosys-hackathon-challenge" / "data" / "tcga-brca" / "raw"
+CHALLENGE_RAW = _REPO_ROOT / "oncosys-hackathon-challenge" / "data" / "tcga-brca" / "raw"
 TEMP_DIR_NAME = "secondopinion-practice-release-a"
 
 Source = Literal["environment", "challenge_repo", "temporary"]
@@ -117,8 +117,8 @@ def practice_release() -> PracticeRelease:
     env = os.environ.get("SO_RELEASE_DIR")
     if env and _complete(Path(env)):
         return PracticeRelease(Path(env).resolve(), "environment", [])
-    if _complete(SIBLING_RAW):
-        return PracticeRelease(SIBLING_RAW.resolve(), "challenge_repo", [])
+    if _complete(CHALLENGE_RAW):
+        return PracticeRelease(CHALLENGE_RAW.resolve(), "challenge_repo", [])
     folder = temporary_folder()
     fetched = _fetch_into(folder)
     return PracticeRelease(folder.resolve(), "temporary", fetched)
