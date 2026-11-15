@@ -13,12 +13,35 @@ patient data, shows its working, and rewrites each claim to say what the data ac
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](apps/api/app)
 [![pandas](https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white)](second_opinion)
 [![Tests](https://img.shields.io/badge/tests-1%2C500%2B%20passing-0b6b5e)](#tested-like-it-matters)
+[![1st place](https://img.shields.io/badge/%F0%9F%8F%86%201st%20place-Evidence%20Navigator%20track-b8860b)](#award)
+
+🏆 **First place, Track 2 (Evidence Navigator)** at the
+[AI Healthcare Hackathon at Northeastern](https://the-open-accelerator.com/hackathon/upcoming/OncoSysHack/), November 2026
 
 **[Watch the demo video](https://youtu.be/JQrZGETIs98)** &nbsp;·&nbsp; **[Run it locally](#run-it-locally)** &nbsp;·&nbsp; **[Full guide](docs/GUIDE.md)**
 
-<sub>Built at the OncoSys Cancer AI Lab hackathon, Track 2: Evidence Navigator. Research prototype, not a clinical tool.</sub>
+<sub>Research prototype, not a clinical tool.</sub>
 
 </div>
+
+---
+
+## Award
+
+<img src="docs/media/certificate.jpg" alt="Certificate: First Place for Best Evidence Navigator at the AI Healthcare Hackathon, awarded to Tech Minds" width="420" align="right">
+
+SecondOpinion, built by team **Tech Minds**, won **First Place for Best Evidence Navigator** at the
+[AI Healthcare Hackathon at Northeastern](https://the-open-accelerator.com/hackathon/upcoming/OncoSysHack/).
+
+- **Organized by** Northeastern University, OncoSys AI, The Open Accelerator and Red Hat.
+- **Format:** four days, November 11–14, 2026. Teams of 3–5 built virtually, then presented at the in-person
+  finals at Northeastern University in Boston.
+- **Challenge:** two tracks on the same frozen TCGA-BRCA release (real breast-cancer data from The Cancer
+  Genome Atlas). Track 2, *Evidence Navigator*, asked teams to help people understand oncology data and
+  choose a next step.
+- **Judging:** a 100-point rubric across seven criteria, with **one winner per track**.
+
+<br clear="right">
 
 ---
 
