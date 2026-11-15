@@ -115,7 +115,7 @@ prompt-injection sentence ("Ignore your earlier instructions…"), which is audi
 
 ## Tested like it matters
 
-| | |
+| Number | What it measures |
 | ---: | :--- |
 | **1,500+** | automated tests: 1,336 Python (engine, API, export, real-data) and 171 web (Vitest) |
 | **18** | reports with known answers in the regression suite |
@@ -190,15 +190,6 @@ Open **<http://localhost:3000>**, choose **Start an audit**, then **Run the prac
 The **[full guide](docs/GUIDE.md)** covers step-by-step setup for every OS, each screen, the exact verdict
 rules, configuration, the optional AI helper, sealed-envelope judging, tests, troubleshooting and known
 limitations.
-
-## Team
-
-| Name | Built |
-| --- | --- |
-| Allen | Audit engine: release loader, checks, verdict rules, robustness, `/audit`, CLI, integration |
-| Benoy | Reading the report: sentence splitting, claim typing, "data can't answer" detection, skeptic tests, Claim Ladder wording |
-| Akshaya | Web app: start screen, claims list, audit board with the Claim Ladder, evidence panel, accessibility |
-| Meghana | Decisions and outputs: decision rules, `audit.json` export, Decision Record, roles, review queue, decision screen, docs |
 
 ## Data credits and third-party code
 
