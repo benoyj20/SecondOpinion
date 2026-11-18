@@ -18,7 +18,7 @@ patient data, shows its working, and rewrites each claim to say what the data ac
 🏆 **First place, Track 2 (Evidence Navigator)** at the
 [AI Healthcare Hackathon at Northeastern](https://the-open-accelerator.com/hackathon/upcoming/OncoSysHack/), November 2026
 
-**[Watch the demo video](https://youtu.be/JQrZGETIs98)** &nbsp;·&nbsp; **[Run it locally](#run-it-locally)** &nbsp;·&nbsp; **[Full guide](docs/GUIDE.md)**
+**[Watch the demo video](https://youtu.be/RAVG4QaeblI)** &nbsp;·&nbsp; **[Run it locally](#run-it-locally)** &nbsp;·&nbsp; **[Full guide](docs/GUIDE.md)**
 
 <sub>Research prototype, not a clinical tool.</sub>
 
