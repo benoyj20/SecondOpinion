@@ -4,6 +4,8 @@
 
 # SecondOpinion
 
+### 🏆 1st Place, Best Evidence Navigator · AI Healthcare Hackathon at Northeastern, November 2026
+
 **A fact-checker for cancer research reports.** It recounts every figure in a report against the real
 patient data, shows its working, and rewrites each claim to say what the data actually supports.
 
@@ -14,9 +16,6 @@ patient data, shows its working, and rewrites each claim to say what the data ac
 [![pandas](https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white)](second_opinion)
 [![Tests](https://img.shields.io/badge/tests-1%2C500%2B%20passing-0b6b5e)](#tested-like-it-matters)
 [![1st place](https://img.shields.io/badge/%F0%9F%8F%86%201st%20place-Evidence%20Navigator%20track-b8860b)](#award)
-
-🏆 **First place, Track 2 (Evidence Navigator)** at the
-[AI Healthcare Hackathon at Northeastern](https://the-open-accelerator.com/hackathon/upcoming/OncoSysHack/), November 2026
 
 **[Watch the demo video](https://youtu.be/h67XkGvg4mk)** &nbsp;·&nbsp; **[Run it locally](#run-it-locally)** &nbsp;·&nbsp; **[Full guide](docs/GUIDE.md)**
 
