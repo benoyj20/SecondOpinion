@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="t d">
+  <title id="t">SecondOpinion decision rules</title>
+  <desc id="d">The suggested decision comes from four rules, first match wins, using each claim's reviewed verdict when a person has reviewed it. Rule 1: a release file has no valid SHA-256, or a checksum does not match, gives Stop. Rule 2: any claim contradicted gives Fix a problem. Rule 3: any claim with insufficient evidence, or any fragile claim, gives Narrow the question. Rule 4: otherwise Proceed. The reviewer chooses the final decision; the Data-use reviewer and Principal investigator sign off.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1120"/>
+      <stop offset="1" stop-color="#101a2f"/>
+    </linearGradient>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1" fill="#1c2840"/>
+    </pattern>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; }
+      .s { font-size: 12px; fill: #cbd5e1; }
+      .m { font-size: 11px; fill: #8b9bb4; }
+      .lbl { font-size: 10.5px; fill: #8b9bb4; }
+      .rule { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; }
+      .when { font-size: 14px; font-weight: 600; fill: #e2e8f0; }
+    </style>
+  </defs>
+
+  <rect width="960" height="640" rx="22" fill="url(#bg)"/>
+  <rect width="960" height="640" rx="22" fill="url(#dots)" opacity="0.7"/>
+
+  <text x="40" y="46" font-size="12" font-weight="700" letter-spacing="3" fill="#fbbf24">DECISION RULES</text>
+  <text x="40" y="76" font-size="23" font-weight="700" fill="#f8fafc">Four rules, first match wins; a person decides</text>
+  <text x="920" y="76" text-anchor="end" class="m">second_opinion/decision.py</text>
+
+  <!-- input -->
+  <rect x="40" y="100" width="880" height="44" rx="10" fill="#131c31" stroke="#26334f"/>
+  <text x="60" y="127" class="s">Each claim counts with its <tspan font-weight="700" fill="#f1f5f9">reviewed verdict</tspan> when a person has reviewed it, else the machine verdict. Checksums come from the release.</text>
+
+  <line x1="150" y1="146" x2="150" y2="166" stroke="#94a3b8" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- rule 1: stop -->
+  <rect x="40" y="170" width="880" height="84" rx="14" fill="#f87171" fill-opacity="0.07" stroke="#f87171" stroke-opacity="0.6"/>
+  <text x="62" y="198" class="rule" fill="#fca5a5">RULE 1</text>
+  <rect x="62" y="210" width="176" height="30" rx="8" fill="#f87171" fill-opacity="0.18" stroke="#f87171" stroke-opacity="0.7"/>
+  <text x="150" y="230" text-anchor="middle" font-size="13" font-weight="800" fill="#fecaca">Stop</text>
+  <text x="270" y="206" class="when">A release file can't be confirmed</text>
+  <text x="270" y="228" class="s">a file has no valid SHA-256, or a note says "Checksum mismatch"</text>
+  <text x="270" y="244" class="m">nothing else matters until the data is re-fetched and matches</text>
+
+  <line x1="150" y1="256" x2="150" y2="276" stroke="#94a3b8" stroke-width="2" marker-end="url(#a)"/>
+  <text x="162" y="270" class="lbl">checksums fine</text>
+
+  <!-- rule 2: fix -->
+  <rect x="40" y="280" width="880" height="84" rx="14" fill="#fb923c" fill-opacity="0.07" stroke="#fb923c" stroke-opacity="0.6"/>
+  <text x="62" y="308" class="rule" fill="#fdba74">RULE 2</text>
+  <rect x="62" y="320" width="176" height="30" rx="8" fill="#fb923c" fill-opacity="0.18" stroke="#fb923c" stroke-opacity="0.7"/>
+  <text x="150" y="340" text-anchor="middle" font-size="13" font-weight="800" fill="#fed7aa">Fix a problem</text>
+  <text x="270" y="316" class="when">Any claim is contradicted</text>
+  <text x="270" y="338" class="s">the report states a figure the data does not give</text>
+  <text x="270" y="354" class="m">would change: reword the claim to the data's value (the Claim Ladder has it)</text>
+
+  <line x1="150" y1="366" x2="150" y2="386" stroke="#94a3b8" stroke-width="2" marker-end="url(#a)"/>
+  <text x="162" y="380" class="lbl">nothing contradicted</text>
+
+  <!-- rule 3: narrow -->
+  <rect x="40" y="390" width="880" height="84" rx="14" fill="#fbbf24" fill-opacity="0.06" stroke="#fbbf24" stroke-opacity="0.55"/>
+  <text x="62" y="418" class="rule" fill="#fcd34d">RULE 3</text>
+  <rect x="62" y="430" width="176" height="30" rx="8" fill="#fbbf24" fill-opacity="0.16" stroke="#fbbf24" stroke-opacity="0.7"/>
+  <text x="150" y="450" text-anchor="middle" font-size="13" font-weight="800" fill="#fde68a">Narrow the question</text>
+  <text x="270" y="426" class="when">Any claim is insufficient_evidence, or any is fragile</text>
+  <text x="270" y="448" class="s">the data can't answer it, the rules couldn't read all of it, or a recount flips it</text>
+  <text x="270" y="464" class="m">would change: add the missing data, check it by hand, or limit it to the count it depends on</text>
+
+  <line x1="150" y1="476" x2="150" y2="496" stroke="#94a3b8" stroke-width="2" marker-end="url(#a)"/>
+  <text x="162" y="490" class="lbl">every claim supported and robust</text>
+
+  <!-- rule 4: proceed -->
+  <rect x="40" y="500" width="880" height="76" rx="14" fill="#34d399" fill-opacity="0.07" stroke="#34d399" stroke-opacity="0.55"/>
+  <text x="62" y="528" class="rule" fill="#6ee7b7">RULE 4</text>
+  <rect x="62" y="536" width="176" height="30" rx="8" fill="#34d399" fill-opacity="0.16" stroke="#34d399" stroke-opacity="0.7"/>
+  <text x="150" y="556" text-anchor="middle" font-size="13" font-weight="800" fill="#a7f3d0">Proceed</text>
+  <text x="270" y="534" class="when">Everything holds</text>
+  <text x="270" y="556" class="s">the report can go ahead as written</text>
+
+  <!-- footer -->
+  <text x="40" y="606" class="lbl">The suggestion is advice: the reviewer picks the final decision and gives a reason. Export stays locked until every claim is reviewed.</text>
+  <text x="40" y="624" class="lbl">Sign-off on every decision: Data-use reviewer and Principal investigator. Every claim's reason and "what would change it" go in the Decision Record.</text>
+</svg>

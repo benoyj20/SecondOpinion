@@ -2,6 +2,12 @@
 
 Summarised from [Idea_Analysis_Report.pdf](Idea_Analysis_Report.pdf).
 
+> **This is the plan as written on Thursday, November 12, 2026, kept as a record.** What was built differs in a few
+> places: the claim auditing and export endpoints all shipped; the UI uses our own Tailwind components, not
+> shadcn/ui; the optional AI helper does more than extraction (it splits half-read sentences and plans checks for
+> claims the rules cannot map, always validated and run by our code); and there are eight claim types, not three.
+> The current design is in [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ## Why this combination
 
 Research Claim Auditor has a hidden test file and an organizer answer key. Claim Ladder is the

@@ -1,7 +1,8 @@
 # SecondOpinion: the full guide
 
-Setup on macOS, Linux and Windows, every screen, the verdict rules, configuration, tests, troubleshooting,
-limitations and the code layout. For the overview, see the [README](../README.md).
+Setup on macOS, Linux and Windows, every screen, the verdict rules, configuration, tests, troubleshooting
+and limitations. For the overview, see the [README](../README.md); for the diagrams, API routes and code map,
+see [Architecture](ARCHITECTURE.md).
 
 > Research prototype. Not a clinical decision system. Verdicts need human review.
 > No diagnosis, treatment advice or risk scores.
@@ -247,14 +248,20 @@ decision → download `audit.json` and the Decision Record.
 
 ### How a verdict is decided
 
-All verdicts come from code. There is no AI in the verdict path and no API key anywhere.
+All verdicts come from code. The optional AI helper (off unless configured, see [Configuration](#configuration))
+can split a sentence the rules only half read, find claims the rules skipped, and propose a check plan for a claim
+the rules cannot map. Our code checks every split, validates and runs the plan with pandas, and the same rules below
+judge the result. The AI never states a number, never sets a verdict and never overrides a rules verdict. With it off,
+those claims come back `insufficient_evidence` for a person to check.
 
 - A stated number is **supported** if it equals the computed value after rounding to the report's own
   precision. For "about / roughly / nearly" it is supported within **2 percentage points** (shares)
   or **2% of the count** (counts). Ranges ("55-65%") must contain the value.
 - One-sided bounds are checked as bounds: "more than 150", "at least 1,000", "fewer than 1%".
 - Amount words become numbers: "a third", "half", "one in ten" (within 2 points); "most" / "the
-  majority" is more than 50%; "nearly all" at least 90%; "a minority" under 50%.
+  majority" is more than 50%; "the vast majority" at least 80%; "nearly all" at least 90%; "a minority"
+  under 50%.
+- A median or mean age stated with "about" is supported within 1 year.
 - Rankings ("the most frequently mutated gene", "the second most common subtype", "the two most
   frequently mutated genes") must hold exactly; ties count as holding. Ratios ("about two to one",
   "twice as many") are supported within 15% ("about") or 10% of the stated ratio.
@@ -476,6 +483,7 @@ is not needed). The validator must print `valid`. A full run takes under 10 seco
 | `PORT`, `UVICORN_PORT` | environment | Web and API ports for `npm run dev` |
 | `SO_RELEASE_DIR` | environment | Folder of the real release; turns on the real-data tests |
 | `SO_ENVELOPE_DIR` | environment | An unsealed envelope's `release/` folder; turns on the envelope rehearsal tests |
+| `SO_CHALLENGE_DIR` | environment | Another copy of the challenge repository for unsealing envelopes. Default: the bundled `oncosys-hackathon-challenge/` folder |
 | `SO_RELEASES_ROOT` | environment, for any shared or deployed instance | If set, `/audit` only accepts release folders inside this directory. Leave it unset for local use |
 | `SO_AI_API_KEY`, `SO_AI_MODEL` | `.env` (copy `.env.example`; git ignores `.env`) | Turn on the optional AI helper (claim plans and Review-page wording). With either unset it stays off. `SO_AI_BASE_URL` and `SO_AI_TIMEOUT` are optional |
 | `SO_AI` | `.env` or environment | `off`, `0` or `false` switches the AI helper off even when the key and model are set |
@@ -502,7 +510,9 @@ npm run typecheck
 npm run build
 ```
 
-To include the real-data and envelope tests (about 500 tests in total):
+Without the data, 139 real-data and envelope tests are skipped. To run all 1,336 Python tests, fetch release A
+(step 5), unseal the practice envelope once (see [Run on a sealed envelope](#run-on-a-sealed-envelope-judging)),
+then:
 
 ```bash
 export SO_RELEASE_DIR="$PWD/oncosys-hackathon-challenge/data/tcga-brca/raw"
@@ -578,42 +588,17 @@ These are shown in the product next to the claims they affect, not only here.
 
 ## How it is built
 
-```text
-apps/web/          Next.js App Router, TypeScript, Tailwind CSS: the screens above (design notes in apps/web/DESIGN.md)
-apps/api/app/      FastAPI transport and request/response models (stateless)
-second_opinion/    Python audit engine and CLI, shared by the API and the CLI
-tests/             Engine, API and web-flow tests; tests/reports holds our own reports with known answers
-scripts/py.mjs     Runs the .venv Python for the npm scripts on macOS, Linux and Windows
-docs/              Plan, challenge snapshot, demo shot list, stack references
-```
+<p align="center">
+  <img src="media/architecture.svg" alt="SecondOpinion architecture: web app, stateless API and CLI over one Python audit engine with seven stages per claim, reading a checksummed release folder; an optional AI helper sees text and schema only; each claim ends with a verdict a person reviews before the decision and export." width="880">
+</p>
 
-Browser → Next.js (proxies `/api/*`) → FastAPI → `second_opinion` (pandas) → evidence, `audit.json`
-and Decision Record. No database. The API keeps no session: the browser sends back what it needs.
+Browser, then Next.js (proxies `/api/*`), then FastAPI, then the `second_opinion` engine (pandas), then evidence,
+`audit.json` and the Decision Record. No database. The API keeps no session: the browser sends back what it needs.
+The CLI calls the same engine.
 
-| Engine module | Role |
-| --- | --- |
-| `report_file.py` | Read an uploaded report file: Markdown and text decoded, PDF text pulled out and cleaned |
-| `extract.py`, `unanswerable.py` | Split the report into sentences, type each claim, parse numbers, detect "the data can't answer this" |
-| `release.py` | Load a release folder (any envelope), checksums, which samples are in which data layer |
-| `checks/` | One check per claim type: count, coverage, share, comparison, rank, ratio, statistic; `attributes.py` reads receptor status, stage, histology, mutations, copy number and deaths the same way for every check |
-| `verdict.py`, `robustness.py`, `skeptic.py` | Tolerance rules, the eight ways of counting, label-shuffle and leave-one-site-out tests |
-| `ladder.py` | The Claim Ladder wording rules (fixed rules, same output every time) |
-| `audit.py` | Runs a list of claims through all of the above and returns the audit result |
-| `decision.py`, `export.py`, `roles.py` | Suggested decision, `audit.json` and Decision Record, role views |
-
-| API route | Purpose |
-| --- | --- |
-| `POST /report-file` | A report file (Markdown, text or PDF) → its text, for the report box |
-| `POST /extract`, `POST /classify` | Report text → sentences and claims (`split: false` skips the AI split); type one ticked sentence |
-| `POST /audit` | Claims + release folder → audit result |
-| `POST /practice-release` | A release-A folder for the practice run (local copy or temporary download) |
-| `POST /decision`, `POST /export` | Suggested decision; `audit.json` and Decision Record (refused until every claim is reviewed) |
-| `GET /roles`, `POST /roles` | Role views |
-| `POST /ai/narrate` | Optional AI wording for a role view, with blanks for the numbers; always answers 200 (AI text or `template`) |
-| `GET /health`, `GET /variants` | Status; the eight ways of counting |
-
-Interactive API docs while running: <http://localhost:3000/api/docs>. See [docs/PLAN.md](PLAN.md)
-and the [implementation plan](superpowers/plans/2026-11-12-secondopinion-claim-auditor.md).
+[Architecture](ARCHITECTURE.md) has the diagrams (the system, how one claim is routed, the decision rules), every
+tolerance with the constant that sets it, the eight ways of counting, what the AI helper sees, all 14 API routes,
+the screens and the module map. Interactive API docs while running: <http://localhost:3000/api/docs>.
 
 Production: `npm run build`, then `npm run start:web` and `npm run start:api` as separate services,
 with `API_ORIGIN` set for the frontend and `SO_RELEASES_ROOT` set on the API.

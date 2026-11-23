@@ -17,7 +17,7 @@ patient data, shows its working, and rewrites each claim to say what the data ac
 [![Tests](https://img.shields.io/badge/tests-1%2C500%2B%20passing-0b6b5e)](#tested-like-it-matters)
 [![1st place](https://img.shields.io/badge/%F0%9F%8F%86%201st%20place-Evidence%20Navigator%20track-b8860b)](#award)
 
-**[Watch the demo video](https://youtu.be/h67XkGvg4mk)** &nbsp;·&nbsp; **[Run it locally](#run-it-locally)** &nbsp;·&nbsp; **[Full guide](docs/GUIDE.md)**
+**[Watch the demo video](https://youtu.be/h67XkGvg4mk)** &nbsp;·&nbsp; **[Run it locally](#run-it-locally)** &nbsp;·&nbsp; **[Full guide](docs/GUIDE.md)** &nbsp;·&nbsp; **[Architecture](docs/ARCHITECTURE.md)**
 
 <sub>Research prototype, not a clinical tool.</sub>
 
@@ -79,8 +79,9 @@ a tag saying whether that verdict is **robust** or **fragile** under other reaso
 ## What makes it different
 
 **Code decides, not AI.** Every verdict comes from deterministic pandas code with explicit tolerance rules
-("about" allows 2 points, "nearly all" means at least 90%, and so on). An optional LLM helper can translate an
-unusual sentence into a structured plan, but the engine validates that plan, runs it and judges the result.
+("about" allows 2 points, "nearly all" means at least 90%, and so on). An optional LLM helper can split a sentence
+the rules only half read, or translate an unusual one into a structured plan, but the engine checks every split,
+validates the plan, runs it and judges the result. A rules verdict is never overridden.
 When the AI writes a summary, the numbers are named blanks that the browser fills from the audit, so a model
 can never put a made-up figure on screen.
 
@@ -151,16 +152,16 @@ every data layer, Luminal A 421 of 844, ER-alpha difference 3.051).
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    U([Reviewer]) --> W["<b>Web app</b><br/>Next.js 16 · React 19<br/>TypeScript · Tailwind"]
-    C([CLI]) --> E
-    W -- "/api/* proxy" --> A["<b>API</b><br/>FastAPI, stateless"]
-    A --> E["<b>Audit engine</b><br/>Python · pandas<br/>extract → check → recount → ladder"]
-    E --> D[("TCGA-BRCA release<br/>SHA-256 verified")]
-    E -. "optional: sentence → plan" .-> L["LLM<br/>(any OpenAI-compatible API)"]
-    E --> O[["audit.json<br/>+ Decision Record"]]
-```
+<p align="center">
+  <img src="docs/media/architecture.svg" alt="SecondOpinion architecture: a reviewer uses the Next.js web app, which proxies /api to a stateless FastAPI service; the CLI calls the same engine. The Python engine runs seven stages per claim (read, coverage gate, check with pandas, judge, recount eight ways, skeptic tests, Claim Ladder), reading the checksummed TCGA-BRCA release folder and the bundled challenge repository. An optional OpenAI-compatible model sees report text and the release schema only. Each claim ends supported, contradicted or insufficient evidence; a person reviews every one, chooses a decision and exports audit.json and a Decision Record." width="880">
+</p>
+
+Rules own every claim they can read. Only a claim the rules cannot map goes to the optional AI helper, whose plan
+our code validates and runs, and anything else gets `insufficient_evidence` with the reason:
+
+<p align="center">
+  <img src="docs/media/audit-path.svg" alt="How one claim is read and checked: rules type the claim and a coverage gate stops half-read ones. Rule-typed claims are checked with pandas, judged, recounted eight ways and given skeptic tests. Unmapped claims go to the AI plan path only when the helper is on, and are validated, gated and run with pandas. Everything else is insufficient evidence. Every result goes through the Claim Ladder." width="880">
+</p>
 
 - **No database, no session state.** The browser keeps the audit and sends back what each step needs, so any
   API instance can answer any request, and a page reload keeps your work.
@@ -176,6 +177,10 @@ flowchart LR
 | Backend | FastAPI, Python 3.11–3.14, pandas, pypdf, jsonschema |
 | Quality | pytest, Vitest, ESLint, `tsc --noEmit` |
 | AI (optional) | Any OpenAI-compatible chat endpoint, off unless configured |
+
+More detail, including the decision rules, every tolerance and where it lives in the code, the eight ways of
+counting, what the AI helper sees, the API routes and the module map:
+**[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 ## Run it locally
 
